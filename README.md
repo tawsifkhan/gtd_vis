@@ -3,3 +3,4 @@ The Global Terrorism Dataset found on Kaggle is a compilation of the terrorist e
 You can read about this open source database on University of Maryland's START website and download it from Kaggle. 
 You can access the app here.
 
+![alt text](https://github.com/tawsifkhan/gtd_vis/blob/master/app.png)
