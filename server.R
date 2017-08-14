@@ -11,7 +11,20 @@ gtd <- fread("Data/mygtd.csv")
 gtd <- data.frame(gtd)
 
 server <- function(input, output) {
+  
+ordermyaxis <- function(axis_labels,reorder_elements) {
+    j <- length(axis_labels)
+    new_i <- which(reorder_elements %in% reorder_elements)
+    new_labels <- reorder_elements
+    new_labels<-append(new_labels,axis_labels[!axis_labels %in% reorder_elements],after = length(reorder_elements))
+    return(new_labels)
+}
+
+#This dataframe is needed to do the fading animation
 interpolate <- data.frame(op=c(3,3.2,3.4))#,4,5))
+
+#Assign number of deaths to a group
+
 nkillgroup <- function(nkill){
   if (is.numeric(nkill)==FALSE) {
     return('Unknown')
@@ -47,13 +60,7 @@ nkillgroup <- function(nkill){
   }
 }
 
-ordermyaxis <- function(axis_labels,reorder_elements) {
-  j <- length(axis_labels)
-  new_i <- which(reorder_elements %in% reorder_elements)
-  new_labels <- reorder_elements
-  new_labels<-append(new_labels,axis_labels[!axis_labels %in% reorder_elements],after = length(reorder_elements))
-  return(new_labels)
-}
+
 
 ##Below is the list of functions that create each plot
 

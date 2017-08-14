@@ -1,7 +1,5 @@
 library(shiny)
 library(plotly)
-library(leaflet)
-library(shinydashboard)
 
 mycss <- "
 #plot-container {
@@ -19,7 +17,7 @@ margin-left: -33px; /* half of the spinner's width */
 z-index: -2;
 }
 "
-ml <- c(1970,1975,1980,1985,1990,1995,2000,2005,2010,2016)
+
 ui <- fluidPage(
   tags$head(tags$style(
     HTML('
@@ -56,6 +54,7 @@ ui <- fluidPage(
                   max=2016,
                   value=c(1990, 2000),
                   sep = ""),
+      
       selectInput("analysis", "Summaries:", 
                  choices = c('Deaths by Regions'='1','Weapons'='2',
                  'Weapons by Regions'='3','Avg. Deaths by Countries (Highest 10) '='4',
@@ -64,9 +63,9 @@ ui <- fluidPage(
                  ),
       
       conditionalPanel(condition="input.analysis=='6'",
-      plotlyOutput(outputId="chart2",width = '100%',height='350px')),
+                       plotlyOutput(outputId="chart2",width = '100%',height='350px')),
       conditionalPanel(condition="input.analysis!='6'",
-      plotOutput(outputId="chart1",width = '100%',height='350px')),
+                       plotOutput(outputId="chart1",width = '100%',height='350px')),
       conditionalPanel(condition="$('html').hasClass('shiny-busy')",
                        tags$div("Loading...",id="loadmessage"))
       ),
@@ -96,7 +95,7 @@ ui <- fluidPage(
                  text-align:right;
                  color: grey;
                  padding: 10px;"),
-              h6( a("Github",href="http://github.com/tawsifkhan"),
+              h6( a("Github",href="http://github.com/tawsifkhan/gtd_vis"),
                  style = "
                  position:absolute;
                  bottom:20px;
