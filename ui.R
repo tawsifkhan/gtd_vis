@@ -1,23 +1,6 @@
 library(shiny)
 library(plotly)
 
-mycss <- "
-#plot-container {
-position: relative;
-}
-#loading-spinner {
-position: absolute;
-left: 50%;
-top: 50%;
-z-index: 1;
-margin-top: -33px;  /* half of the spinner's height */
-margin-left: -33px; /* half of the spinner's width */
-}
-#plot.recalculating {
-z-index: -2;
-}
-"
-
 ui <- fluidPage(
   tags$head(tags$style(
     HTML('
@@ -87,8 +70,8 @@ ui <- fluidPage(
                  width:100%;
                  color: grey;
                  padding: 10px;"),
-              h6('Source: Global Terrorism Database found in Kaggle',
-                 style = "
+              h6(a('Data: Global Terrorism Database by UMD START downloaded from in Kaggle'),
+                 href="https://www.kaggle.com/START-UMD/gtd",style = "
                  position:absolute;
                  bottom:40px;
                  width:100%;
