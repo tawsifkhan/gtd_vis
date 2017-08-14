@@ -55,6 +55,8 @@ ordermyaxis <- function(axis_labels,reorder_elements) {
   return(new_labels)
 }
 
+##Below is the list of functions that create each plot
+
 make_map <- function (df) {
   df<-merge(df,interpolate,all=TRUE)
   
@@ -296,8 +298,4 @@ output$plot <- renderPlotly({
     df <- subset(gtd,gtd$iyear>=input$yearInput[1] & gtd$iyear <= input$yearInput[2])
     plot <- avg_deaths_events(df)
   })
-  
-
-##Below is the list of functions that create each plot
-
 }
