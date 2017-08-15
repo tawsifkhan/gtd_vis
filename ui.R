@@ -2,7 +2,9 @@ library(shiny)
 library(plotly)
 
 ui <- fluidPage(
-  tags$head(tags$style(
+  tags$head(
+    tags$head(includeScript("google-analytics.js")),
+    tags$style(
     HTML('
          #sidebar {
          background-color: #FFFFFF;
@@ -37,7 +39,6 @@ ui <- fluidPage(
                   max=2016,
                   value=c(1990, 2000),
                   sep = ""),
-      
       selectInput("analysis", "Summaries:", 
                  choices = c('Deaths by Regions'='1','Weapons'='2',
                  'Weapons by Regions'='3','Avg. Deaths by Countries (Highest 10) '='4',
@@ -46,9 +47,9 @@ ui <- fluidPage(
                  ),
       
       conditionalPanel(condition="input.analysis=='6'",
-                       plotlyOutput(outputId="chart2",width = '100%',height='350px')),
+      plotlyOutput(outputId="chart2",width = '100%',height='350px')),
       conditionalPanel(condition="input.analysis!='6'",
-                       plotOutput(outputId="chart1",width = '100%',height='350px')),
+      plotOutput(outputId="chart1",width = '100%',height='350px')),
       conditionalPanel(condition="$('html').hasClass('shiny-busy')",
                        tags$div("Loading...",id="loadmessage"))
       ),
@@ -70,18 +71,19 @@ ui <- fluidPage(
                  width:100%;
                  color: grey;
                  padding: 10px;"),
-              h6(a('Data: Global Terrorism Database by UMD START downloaded from in Kaggle'),
-                 href="https://www.kaggle.com/START-UMD/gtd",style = "
+              h6(a('Data: Global Terrorism Database by UMD START downloaded from in Kaggle',
+                 href="https://www.kaggle.com/START-UMD/gtd"),
+                 style = "
                  position:absolute;
-                 bottom:40px;
+                 bottom:20px;
                  width:100%;
                  text-align:right;
                  color: grey;
                  padding: 10px;"),
-              h6( a("Github",href="http://github.com/tawsifkhan/gtd_vis"),
+              h6( a("Get the code",href="https://github.com/tawsifkhan/gtd_vis"),
                  style = "
                  position:absolute;
-                 bottom:20px;
+                 bottom:40px;
                  width:100%;
                  text-align:right;
                  color: grey;

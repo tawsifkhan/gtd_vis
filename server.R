@@ -5,26 +5,14 @@ library(dplyr)
 library(shiny)
 library(data.table)
 library(RColorBrewer)
+library(scales)
 
 
 gtd <- fread("Data/mygtd.csv")
 gtd <- data.frame(gtd)
 
 server <- function(input, output) {
-  
-ordermyaxis <- function(axis_labels,reorder_elements) {
-    j <- length(axis_labels)
-    new_i <- which(reorder_elements %in% reorder_elements)
-    new_labels <- reorder_elements
-    new_labels<-append(new_labels,axis_labels[!axis_labels %in% reorder_elements],after = length(reorder_elements))
-    return(new_labels)
-}
-
-#This dataframe is needed to do the fading animation
 interpolate <- data.frame(op=c(3,3.2,3.4))#,4,5))
-
-#Assign number of deaths to a group
-
 nkillgroup <- function(nkill){
   if (is.numeric(nkill)==FALSE) {
     return('Unknown')
@@ -60,14 +48,26 @@ nkillgroup <- function(nkill){
   }
 }
 
-
+ordermyaxis <- function(axis_labels,reorder_elements) {
+  j <- length(axis_labels)
+  new_i <- which(reorder_elements %in% reorder_elements)
+  new_labels <- reorder_elements
+  new_labels<-append(new_labels,axis_labels[!axis_labels %in% reorder_elements],after = length(reorder_elements))
+  return(new_labels)
+}
 
 ##Below is the list of functions that create each plot
 
 make_map <- function (df) {
+  x_1<-df %>% group_by(iyear,country_txt,country,longitude,latitude,region_txt,region) %>% summarise(nkill=sum(nkill,na.rm=TRUE))
+  x_2<-df %>% group_by(iyear,country_txt,country,longitude,latitude,region_txt,region) %>% summarise(wound=sum(nwound,na.rm=TRUE))
+ # x_3<-df %>% group_by(iyear,country_txt,country,longitude,latitude,region_txt,region) %>% summarise(weaptype1=max(weaptype1,na.rm=TRUE))
+  
+  df<-Reduce(function(...) merge(..., all=TRUE), list(x_1, x_2))
+  
   df<-merge(df,interpolate,all=TRUE)
   
-  df <- df[with(df, order(iyear,imonth,country,longitude,latitude,op)), ]
+  df <- df[with(df, order(iyear,country,longitude,latitude,op)), ]
   
   df$myframe <- paste(df$iyear,df$op)
   
@@ -89,12 +89,10 @@ make_map <- function (df) {
   g2 <- c(
     g,
     showcountries = F,
-    bgcolor = toRGB("white", alpha = 0),
-    theme(legend.position = "none")
+    bgcolor = toRGB("white", alpha = 0)
     #list(domain = list(x = c(0, .6), y = c(0, .6))
   )
   df$Deaths <- unlist(lapply(df$nkill,FUN = nkillgroup))
-  
   p<- df %>%
     plot_geo(locationmode='country names',colors=colfunc(5))%>% 
     add_markers(x=~longitude,y=~latitude,size=~op,frame=~myframe,frame=~iyear,
@@ -305,4 +303,5 @@ output$plot <- renderPlotly({
     df <- subset(gtd,gtd$iyear>=input$yearInput[1] & gtd$iyear <= input$yearInput[2])
     plot <- avg_deaths_events(df)
   })
+
 }
