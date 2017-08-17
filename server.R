@@ -95,7 +95,7 @@ make_map <- function (df) {
   df$Deaths <- unlist(lapply(df$nkill,FUN = nkillgroup))
   p<- df %>%
     plot_geo(locationmode='country names',colors=colfunc(5))%>% 
-    add_markers(x=~longitude,y=~latitude,size=~op,frame=~myframe,frame=~iyear,
+    add_markers(x=~longitude,y=~latitude,size=~op,frame=~myframe,
                 sizes=c(3,6),color=~Deaths,opacity = 0.5,
                 text = ~paste('Country:',df$country_txt, '</br>Deaths:',df$nkill)
     )%>% 

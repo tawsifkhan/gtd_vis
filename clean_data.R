@@ -24,4 +24,6 @@ unique(df[c('country_txt','country')])
 df$country_txt <- as.character(df$country_txt)
 df$country_txt[df$country==229 | df$country==47] <- "Congo"
 
+df$country_txt[df$longitude<(-16.62912) & df$longitude>(-16.62915) & df$latitude<28.29157 & df$latitude > 28.29156)] <- 'Spain'
+
 write.csv(df,file='./mygtd.csv')
